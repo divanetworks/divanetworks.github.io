@@ -546,7 +546,14 @@ Author: John Pansewicz, john@redtopia.com
 					id: createID(),
 					stroke: '#ccc',
 					strokeWidth: 1,
-					fill: 'none'
+					fill: 'none',
+					resize: function (object, data) {
+						// recalculate the line
+						object.transition()
+							  .ease('elastic')
+							  .duration($opts.resizeSpeed)
+							  .attr('d', fnLine(data.data));
+					}
 				}, opts),
 				id = $opts.prefix + o.id,
 				fnLine = d3.svg.line()
