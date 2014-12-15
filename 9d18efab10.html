@@ -497,78 +497,6 @@ $(document).ready(function () {
 
 	} // drawMainGraph()
 
-	function drawTestGraph (graph) {
-
-		/*
-		Draws basic elements onto the test graph
-		*/
-
-		// show the grid
-
-		$(graph).divaGraph('showGrid');
-
-		// add an image
-
-		$(graph).divaGraph('addObject', 'image', {
-			src: 'image/logo.png',
-			label: {
-				text: 'Label, 24px, Bold',
-				fontSize: 24,
-				fontWeight: 'bold'
-			},
-			x: 70,
-			y: 70,
-			width: 306,
-			height: 306,
-			scale: 0.4,
-			id: 'test-logo'
-		});
-
-		// add a big circle that's outside the grid range
-
-		$(graph).divaGraph('addObject', 'circle', {
-			x: -45, y: -5, size: 100, fill: 'red'
-		});
-
-		// add a line
-
-		$(graph).divaGraph('addObject', 'line', {
-			from: {x: 40, y: 60}, to: {x: 60, y: 90}, strokeWidth: 1
-		});
-
-		// add 2 named circles and a curved line between them
-
-		$(graph).divaGraph('addObject', 'circle', {
-			id: 'circle-1', x: 20, y: 15, size: 10, fill: 'blue', stroke: '#444', strokeWidth: 2
-		});
-
-		$(graph).divaGraph('addObject', 'circle', {
-			id: 'circle-2', x: 19, y: 65, size: 20, fill:'red'
-		});
-
-		$(graph).divaGraph('addObject', 'curvedLine', {
-			start: 'circle-1', end: 'circle-2',
-			curve: {distance:30, offset:10, interpolate: 'basis'}
-		});
-
-		// add a path
-
-		$(graph).divaGraph('addObject', 'path', {
-			interpolate: 'basis',
-			data: [
-				{x: 0,   y: 20},
-				{x: 40,  y: 60},
-				{x: 40,  y: 10},
-				{x: 60,  y: 40},
-				{x: 80,  y: 5},
-				{x: 100, y: 60}
-			],
-			stroke: 'green',
-			strokeWidth: 2
-		});
-
-	} // drawTestGraph()
-
 	/* create a divaGraph instance for the main graph */
 
 	var mainGraph = $('#maingraph');
@@ -593,34 +521,6 @@ $(document).ready(function () {
 	/* draw the main graph */
 
 	drawMainGraph(mainGraph);
-
-	/* click handler to toggle grid on/off */
-
-	$('#toggle-grid').on('click', function () {
-		$(mainGraph).divaGraph('toggleGrid');
-		return(false);
-	});
-
-	/* click handler to change aspect ratio */
-
-	$('a.resize-link', '#options').on('click', function () {
-		var ratio = $(this).attr('data-aspectratio');
-		$(mainGraph).divaGraph('setAspectRatio', ratio);
-	});
-
-	/* create the test graph instance */
-
-	var testGraph = $('#testgraph');
-
-	$(testGraph).divaGraph({
-		debug:true,
-		resizeSpeed: 1000,
-		prefix: 'diva2-'
-	});
-
-	/* draw the test graph */
-
-	drawTestGraph(testGraph);
 
 });
 </script>
