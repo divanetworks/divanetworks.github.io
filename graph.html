@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
+	<title>DIVA Graph Test</title>
+
+	<link rel="stylesheet" href="components/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="components/divagraph/jquery.divagraph.1.0.css" />
+	<link rel="stylesheet" href="css/styles.css" />
+	
+</head>
+<body>
+
+<div id="page" class="container">
+	<div class="row">
+
+		<div class="col-xs-12">
+			
+			<h1>Diva Graph Sandbox</h1>
+
+			<p id="options"><a id="toggle-grid" href="#">Toggle Grid</a> | <a class="resize-link" data-aspectratio="4:3" href="#">Aspect Ratio 4:3</a> | <a class="resize-link" data-aspectratio="16:9" href="#">Aspect Ratio 16:9</a></p>
+
+			<div id="maingraph"></div>
+
+			<h3>Test Graph</h3>
+
+			<div id="testgraph"></div>
+
+		</div>
+
+	</div>
+
+</div>
+
+<script src="components/jquery/jquery-2.1.1.min.js"></script>
+<script src="components/bootstrap/js/bootstrap.min.js"></script>
+<script src="components/d3/d3.min.js"></script>
+<script src="components/divagraph/jquery.divagraph.1.0.js"></script>
+
+<script>
+$(document).ready(function () {
+	
+	function drawMainGraph (graph) {
+		
+		/*
+		Draws the main graph according to the specs received.
+		*/
+
+		// Add the logo
+
+		$(graph).divaGraph('addObject', 'image', {
+			src: 'image/logo.png',
+			label: {
+				text: 'DIVA Networks',
+				fontSize: 24,
+				fontWeight: 'normal'
+			},
+			x: 10,
+			y: 90,
+			width: 306,
+			height: 306,
+			scale: 0.3,
+			id: 'logo'
+		});
+
+		// Create the circles group data
+
+		var circles = [
+				{
+					type: 'circle',
+					data: {
+						id: 'circle-1', x: -45, y: -5, size: 100,
+						strokeWidth:0, fill:'#f0e9ff'
+					}
+				},
+				{
+					type: 'circle',
+					data: {
+						id: 'circle-2', x: 22, y: 60, size: 18,
+						strokeWidth:0, fill:'#e0ebff'
+					}
+				},
+				{
+					type: 'circle',
+					data: {
+						id: 'circle-3', x: 26, y: 21, size: 10, 
+						strokeWidth:0, fill:'#fff0e8'
+					}
+				},
+				{
+					type: 'circle',
+					data: {
+						id: 'circle-4', x: 50, y: 51, size: 6,
+						strokeWidth:0, fill:'#f0fdea'
+					}
+				},
+				{
+					type: 'circle',
+					data: {
+						id: 'circle-5', x: 63, y: 37, size: 7,
+						strokeWidth:0, fill:'#ffedfa'
+					}
+				},
+				{
+					type: 'circle',
+					data: {
+						id: 'circle-6', x: 75, y: 15, size: 7, 
+						strokeWidth:0, fill:'#fef8df'
+					}
+				},
+				{
+					type: 'circle',
+					data: {
+						id: 'circle-7', x: 82, y: 75, size: 9, 
+						strokeWidth:0, fill:'#fef8df'
+					}
+				},
+				{
+					type: 'circle',
+					data: {
+						id: 'circle-8', x: 85, y: 38, size: 5,
+						strokeWidth:0, fill:'#fef8df'
+					}
+				},
+				{ // hidden to the right - connected to 7
+					type: 'circle',
+					data: {
+						id: 'circle-9', x: 115, y: 115, size: 1
+					}
+				},
+				{ // hidden to the bottom - connected to 6
+					type: 'circle',
+					data: {
+						id: 'circle-10', x: 93, y: -10, size: 1
+					}
+				},
+
+				// white with border circles
+				{
+					type: 'circle',
+					data: {
+						id: 'sm-circle-1', x: 45, y: 65
+					}
+				},
+				{
+					type: 'circle',
+					data: {
+						id: 'sm-circle-2', x: 56, y: 75
+					}
+				},
+				{
+					type: 'circle',
+					data: {
+						id: 'sm-circle-3', x: 58, y: 63
+					}
+				},
+
+				//
+				{
+					type: 'circle',
+					data: {
+						id: 'sm-circle-4', x: 69.5, y: 74
+					}
+				},
+				{
+					type: 'circle',
+					data: {
+						id: 'sm-circle-5', x: 83, y: 20
+					}
+				},
+				{
+					type: 'circle',
+					data: {
+						id: 'sm-circle-6', x: 89, y: 57
+					}
+				},
+
+				//
+				{
+					type: 'circle',
+					data: {
+						id: 'sm-circle-7', x: 47, y: 20
+					}
+				},
+				{
+					type: 'circle',
+					data: {
+						id: 'sm-circle-8', x: 51, y: 26
+					}
+				},
+				{
+					type: 'circle',
+					data: {
+						id: 'sm-circle-9', x: 55, y: 18
+					}
+				}
+		];
+
+		// add the circle group
+
+		$(graph).divaGraph('addObjectGroup', circles);
+
+		// Create the line group data
+
+		var lines = [
+
+				// circle-3 to circle-1
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-3', end: 'circle-1', 
+						curve: {distance:12, offset:7, interpolate: 'cardinal'}
+					}
+				},
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-3', end: 'circle-1', 
+						curve: {distance:3, offset:10, interpolate: 'cardinal'}
+					}
+				},
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-3', end: 'circle-1', 
+						curve: {distance:1, offset:13, interpolate: 'cardinal'}
+					}
+				},
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-3', end: 'circle-1',
+						curve: {distance:4, offset:-13, interpolate: 'cardinal'}
+					}
+				},
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-3', end: 'circle-1',
+						curve: {distance:5, offset:-11, interpolate: 'cardinal'}
+					}
+				},
+
+				// circle-3 to circle-2
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-3', end: 'circle-2',
+						curve: {distance:40, offset:4, interpolate: 'basis'}
+					}
+				},
+
+				// circle-3 to circle-5
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-3', end: 'circle-5',
+						curve: {distance:25, offset:-3, interpolate: 'basis'}
+					}
+				},
+
+				// circle-3 to sm-circle-7
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-3', end: 'sm-circle-7',
+						curve: {distance:60, offset:4, interpolate: 'basis'}
+					}
+				},
+
+				// circle-3 to sm-circle-8
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-3', end: 'sm-circle-8',
+						curve: {distance:50, offset:-4, interpolate: 'basis'}
+					}
+				},
+
+				// circle-3 to sm-circle-9
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-3', end: 'sm-circle-9',
+						curve: {distance:65, offset:10, interpolate: 'basis'}
+					}
+				},
+
+				// circle-2 to circle-1
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-2', end: 'circle-1',
+						curve: {distance:40, offset:4, interpolate: 'basis'}
+					}
+				},
+
+				// circle 2 to circle 4
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-2', end: 'circle-4',
+						curve: {distance:50, offset:-3, interpolate: 'basis'}
+					}
+				},
+
+				// circle 2 to circle 5
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-2', end: 'circle-5', 
+						curve: {distance:45, offset:4, interpolate: 'basis'}
+					}
+				},
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-2', end: 'circle-5', 
+						curve: {distance:30, offset:-65, interpolate: 'basis'}
+					}
+				},
+
+				// circle-2 to circle sm-circle-1
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-2', end: 'sm-circle-1', 
+						curve: {distance:70, offset:-5, interpolate: 'basis'}
+					}
+				},
+
+				// circle-4 to sm-circle-1
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-4', end: 'sm-circle-1', 
+						curve: {distance:70, offset:3, interpolate: 'basis'}
+					}
+				},
+
+				// circle-4 to sm-circle-2
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-4', end: 'sm-circle-2', 
+						curve: {distance:50, offset:-2, interpolate: 'basis'}
+					}
+				},
+
+				// circle-4 to sm-circle-3
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-4', end: 'sm-circle-3', 
+						curve: {distance:50, offset:-2, interpolate: 'basis'}
+					}
+				},
+
+				// sm-circle-3 to circle-5
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'sm-circle-3', end: 'circle-5', 
+						curve: {distance:1, offset:-5, interpolate: 'basis'}
+					}
+				},
+
+				// circle-4 to circle-5
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-4', end: 'circle-5', 
+						curve: {distance:50, offset:-2, interpolate: 'basis'}
+					}
+				},
+
+				// circle-5 to sm-circle-8
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-5', end: 'sm-circle-8', 
+						curve: {distance:35, offset:-12, interpolate: 'basis'}
+					}
+				},
+
+				// circle-5 to logo
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-5', end: 'logo', 
+						curve: {distance:70, offset:65, interpolate: 'basis'}
+					}
+				},
+
+				// circle-5 to sm-circle-4
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-5', end: 'sm-circle-4', 
+						curve: {distance:50, offset:2, interpolate: 'basis'}
+					}
+				},
+
+				// circle-5 to circle-7
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-5', end: 'circle-7', 
+						curve: {distance:50, offset:3, interpolate: 'basis'}
+					}
+				},
+
+				// circle-5 to sm-circle-6
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-5', end: 'sm-circle-6', 
+						curve: {distance:60, offset:3, interpolate: 'basis'}
+					}
+				},
+
+				// circle-5 to circle-6
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-5', end: 'circle-6', 
+						curve: {distance:60, offset:-3, interpolate: 'basis'}
+					}
+				},
+
+				// circle-6 to circle-10 (hidden)
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-6', end: 'circle-10', 
+						curve: {distance:45, offset:3, interpolate: 'basis'}
+					}
+				},
+
+				// circle-5 to sm-circle-5
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-5', end: 'sm-circle-5', 
+						curve: {distance:60, offset:-3, interpolate: 'basis'}
+					}
+				},
+
+				// circle-7 to sm-circle-4
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-7', end: 'sm-circle-4', 
+						curve: {distance:85, offset:17, interpolate: 'basis'}
+					}
+				},
+
+				// circle-7 to circle-9
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-7', end: 'circle-9', 
+						curve: {distance:50, offset:-5, interpolate: 'basis'}
+					}
+				},
+
+				// circle-8 to circle-9
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-8', end: 'circle-9', 
+						curve: {distance:30, offset:10, interpolate: 'basis'}
+					}
+				},
+
+				// sm-circle-9 to circle-6
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'sm-circle-9', end: 'circle-6', 
+						curve: {distance:40, offset:-3, interpolate: 'basis'}
+					}
+				},
+
+				// circle-8 to sm-circle-5
+				{
+					type: 'curvedLine',
+					data: {
+						start: 'circle-8', end: 'sm-circle-5', 
+						curve: {distance:160, offset:-10, interpolate: 'basis'}
+					}
+				},
+			];
+
+		/*
+		Add the line group
+		
+		last param (true) means to prepend the lines to the svg so 
+		that the circles sit on top of the lines
+		*/
+
+		$(graph).divaGraph('addObjectGroup', lines, true);
+
+	} // drawMainGraph()
+
+	function drawTestGraph (graph) {
+
+		/*
+		Draws basic elements onto the test graph
+		*/
+
+		// show the grid
+
+		$(graph).divaGraph('showGrid');
+
+		// add an image
+
+		$(graph).divaGraph('addObject', 'image', {
+			src: 'image/logo.png',
+			label: {
+				text: 'Label, 24px, Bold',
+				fontSize: 24,
+				fontWeight: 'bold'
+			},
+			x: 70,
+			y: 70,
+			width: 306,
+			height: 306,
+			scale: 0.4,
+			id: 'test-logo'
+		});
+
+		// add a big circle that's outside the grid range
+
+		$(graph).divaGraph('addObject', 'circle', {
+			x: -45, y: -5, size: 100, fill: 'red'
+		});
+
+		// add a line
+
+		$(graph).divaGraph('addObject', 'line', {
+			from: {x: 40, y: 60}, to: {x: 60, y: 90}, strokeWidth: 1
+		});
+
+		// add 2 named circles and a curved line between them
+
+		$(graph).divaGraph('addObject', 'circle', {
+			id: 'circle-1', x: 20, y: 15, size: 10, fill: 'blue', stroke: '#444', strokeWidth: 2
+		});
+
+		$(graph).divaGraph('addObject', 'circle', {
+			id: 'circle-2', x: 19, y: 65, size: 20, fill:'red'
+		});
+
+		$(graph).divaGraph('addObject', 'curvedLine', {
+			start: 'circle-1', end: 'circle-2', 
+			curve: {distance:30, offset:10, interpolate: 'basis'}
+		});
+
+		// add a path
+		
+		$(graph).divaGraph('addObject', 'path', {
+			interpolate: 'basis',
+			data: [
+				{x: 0,   y: 20},
+				{x: 40,  y: 60},
+				{x: 40,  y: 10},
+				{x: 60,  y: 40},
+				{x: 80,  y: 5},
+				{x: 100, y: 60}
+			],
+			stroke: 'green',
+			strokeWidth: 2
+		});
+		
+	} // drawTestGraph()
+	
+	/* create a divaGraph instance for the main graph */
+
+	var mainGraph = $('#maingraph');
+
+	$(mainGraph).divaGraph({
+		debug:true,
+		resizeSpeed: 1000,
+		prefix: 'diva-',
+		bgColor: '#fff',
+		lines: {					// default line styles
+			stroke: '#ccc',
+			strokeWidth: 1
+		},
+		circles: {				// default circle styles - these setting will draw the white circles with border
+			stroke: '#ccc',
+			strokeWidth: 1,
+			fill: '#fff',
+			size: 3
+		}
+	});
+
+	/* draw the main graph */
+	
+	drawMainGraph(mainGraph);
+
+	/* click handler to toggle grid on/off */
+
+	$('#toggle-grid').on('click', function () {
+		$(mainGraph).divaGraph('toggleGrid');
+		return(false);
+	});
+
+	/* click handler to change aspect ratio */
+
+	$('a.resize-link', '#options').on('click', function () {
+		var ratio = $(this).attr('data-aspectratio');
+		$(mainGraph).divaGraph('setAspectRatio', ratio);
+	});
+
+	/* create the test graph instance */
+
+	var testGraph = $('#testgraph');
+
+	$(testGraph).divaGraph({
+		debug:true,
+		resizeSpeed: 1000,
+		prefix: 'diva2-'
+	});
+
+	/* draw the test graph */
+	
+	drawTestGraph(testGraph);
+
+});
+</script>
+
+</body>
+</html>
