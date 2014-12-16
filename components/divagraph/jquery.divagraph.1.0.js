@@ -40,7 +40,7 @@ Author: John Pansewicz, john@redtopia.com
 				$svg.style('background-color', $opts.bgColor);
 			}
 
-			doSetAspectRatio();
+			doSetAspectRatio($opts.aspectRatio);
 
 			doResize(false);
 
@@ -50,23 +50,32 @@ Author: John Pansewicz, john@redtopia.com
 
 		} // init()
 
-		function doSetAspectRatio () {
+		function doSetAspectRatio (aspectRatio) {
 
-			var rx = $opts.aspectRatio.match(/(\d+):(\d+)/),
+			var rx = aspectRatio.match(/(\d+):(\d+)/),
 				w,
 				h;
 			
-			debug('aspect ratio: ' + $opts.aspectRatio);
+			debug('aspect ratio: ' + aspectRatio);
 
-			if (rx && rx.length === 3) {
-				w = parseInt(rx[1]);
-				h = parseInt(rx[2]);
-				if (!isNaN(w) && w > 0 && !isNaN(h) && h > 0) {
-					$aspectRatio = w / h;
-					debug('aspect ratio set: ' + $aspectRatio);
-				}
-
+			if (!rx || rx.length !== 3) {
+				aspectRatio = '16:9';
+				rx = aspectRatio.match(/(\d+):(\d+)/);
 			}
+
+			w = parseInt(rx[1]);
+			h = parseInt(rx[2]);
+			
+			if (!isNaN(w) && w > 0 && !isNaN(h) && h > 0) {
+				$aspectRatio = w / h;
+				debug('aspect ratio set: ' + $aspectRatio);
+			}
+			else {
+				aspectRatio = '16:9';
+				$aspectRatio = 16 / 9;
+			}
+
+			$opts.aspectRatio = aspectRatio;
 
 		} // doSetAspectRatio()
 
@@ -171,36 +180,40 @@ Author: John Pansewicz, john@redtopia.com
 
 			var r = radius;
 			
-			if (r <= 0 && size > 0) {
+			if (r <= 0 && size != 0) {
 				// create a radius based on percentage of minimum svg dimension
-				var svgSize = Math.min($($elem).height(), $($elem).width());
-				r = svgSize * (size / 100);
+				var gridSize = Math.min($($elem).height(), $($elem).width()) / 100;
+				r = gridSize * size;
+				debug('calcRadius - size: ' + size + ', gridSize: ' + gridSize + ', radius: ' + r);
 			}
-				
-			debug('calcRadius - radius: ' + radius + ', size: ' + size + ', svgSize: ' + svgSize + ', calc: ' + r);
 			
 			return(r);
 		
 		} // calcRadius()
 
-		function scaleRect (width, height, scale, minWidth) {
+		function scaleRect (width, height, scale, minWidth, maxWidth) {
 			if (typeof(minWidth) === 'undefined') {
 				minWidth = 0;
 			}
 			var w = $($elem).width() * scale,
 				rWidth = w * scale,
+				rHeight,
 				pDiff,
 				r;
 
 			if (rWidth < minWidth) {
 				rWidth = minWidth;
 			}
+			else if (maxWidth && rWidth > maxWidth) {
+				rWidth = maxWidth;
+			}
 
 			pDiff = rWidth / width,
+			rHeight = height * pDiff;
 
 			r = {
 				width: rWidth,
-				height: height * pDiff
+				height: rHeight
 			};
 
 			debug('scaleRect - w: ' + width + ', h: ' + height + ', scale: ' + scale + ', rWidth: ' + rWidth + ', pdiff: ' + pDiff, r);
@@ -405,6 +418,34 @@ Author: John Pansewicz, john@redtopia.com
 			return({x: imgCoords.x + (imgRect.width/2), y: imgCoords.y + (label.fontSize / 2)});
 		}
 
+		function imagePostion (pt, rect, position) {
+
+			// top/left
+			var imgPt = {
+				x: pt.x,
+				y: pt.y
+			};
+
+			switch (position) {
+				case 'center':
+					imgPt.x = pt.x - (rect.width/2);
+					imgPt.y = pt.y - (rect.height/2);
+					break;
+				case 'topright':
+					imgPt.x = pt.x - (rect.width);
+					break;
+				case 'bottomright':
+					imgPt.x = pt.x - (rect.width);
+					imgPt.y = pt.y - (rect.height);
+					break;
+				case 'bottomleft':
+					imgPt.y = pt.y - (rect.height);
+					break;
+			}
+
+			return(imgPt);
+		}
+
 		function addImage(opts, group) {
 			
 			// creates an image
@@ -416,6 +457,9 @@ Author: John Pansewicz, john@redtopia.com
 					label: null,
 					width: 100,
 					height:100,
+					minWidth: 0,
+					maxWidth: 0,
+					position:'center',
 					getCoords: function (object, data) {
 						//debug('image coords', data);
 						return({x: data.x, y: data.y});
@@ -423,21 +467,21 @@ Author: John Pansewicz, john@redtopia.com
 					resize: function (object, data) {
 						debug('resizing image');
 						var pt = toGrid(data.x, data.y),
-							r = scaleRect(data.width, data.height, data.scale),
+							r = scaleRect(data.width, data.height, data.scale, data.minWidth, data.maxWidth),
+							imgPt = imagePostion(pt, r, data.position),
 							img = object.select('image'),
 							txt = object.select('text');
 
 						//debug('resize image: ', img);
-
 						img.transition()
 							.ease($opts.resizeTransition)
 							.duration($opts.resizeSpeed)
-							.attr('x', pt.x - (r.width/2))
-							.attr('y', pt.y - (r.height/2))
+							.attr('x', imgPt.x)
+							.attr('y', imgPt.y)
 							.attr('width', r.width)
 							.attr('height', r.height);
 
-						if (txt.length) {
+						if (data.label && txt.length) {
 							pt = textPosition(data.label, pt, r);
 							txt.transition()
 								.ease($opts.resizeTransition)
@@ -449,15 +493,16 @@ Author: John Pansewicz, john@redtopia.com
 				}, opts),
 				id = $opts.prefix + o.id,
 				pt = toGrid(o.x, o.y),
-				r = scaleRect(o.width, o.height, o.scale),
+				r = scaleRect(o.width, o.height, o.scale, o.minWidth, o.maxWidth),
+				imgPt = imagePostion(pt, r, o.position),
 				imgGroup = (typeof(group) !== 'undefined') ? group.append('g') : $svg.append('g'),
 				image = imgGroup.append('svg:image');
 
 				imgGroup.attr('id', id);
 
 				image.attr('id', id + '-img')
-					  .attr('x', pt.x - (r.width/2))
-					  .attr('y', pt.y - (r.height/2))
+					  .attr('x', imgPt.x)
+					  .attr('y', imgPt.y)
 					  .attr('width', r.width)
 					  .attr('height', r.height)
 					  .attr('xlink:href', o.src)
@@ -687,9 +732,16 @@ Author: John Pansewicz, john@redtopia.com
 			
 			// resize the wrapper to maintain specified aspect ratio
 			
+			if (typeof($opts.resize) === 'function') {
+				var ar = $opts.resize($elem);
+				if (typeof(ar) === 'string' && ar != $opts.aspectRatio) {
+					doSetAspectRatio(ar);
+				}
+			}
+
 			var w = $($elem).width(),
 				h = Math.ceil(w/$aspectRatio);
-			
+
 			$($elem).css('height', h + 'px');
 
 			if ($resizeTimer) {
@@ -799,9 +851,10 @@ Author: John Pansewicz, john@redtopia.com
 
 		this.setAspectRatio = function (aspectRatio) {
 			// sets the aspect ratio
-			$opts.aspectRatio = aspectRatio;
-			doSetAspectRatio();
-			doResize(false);
+			if (aspectRatio !== $opts.aspectRatio) {
+				doSetAspectRatio(aspectRatio);
+				doResize(false);
+			}
 		};
 
 		this.option = function (optName, optValue) {
