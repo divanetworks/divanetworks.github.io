@@ -506,11 +506,12 @@ $(document).ready(function () {
 			Since the graph is always 100% width of window, we can use
 			elem to determine window width.
 			*/
-
-			// for now, make the graph full width and full height
-			var ar = $(window).width() + ':' + $(window).height();
-			return(ar);
-			//return('16:9');
+			var ar = 16 / 9;
+			winAR = $(window).width() / $(window).height();
+			if (winAR >= ar) {
+				return(ar);
+			}
+			return(4/3);
 		}
 	});
 

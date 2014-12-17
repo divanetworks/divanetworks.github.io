@@ -52,30 +52,41 @@ Author: John Pansewicz, john@redtopia.com
 
 		function doSetAspectRatio (aspectRatio) {
 
-			var rx = aspectRatio.match(/(\d+):(\d+)/),
-				w,
-				h;
-			
-			debug('aspect ratio: ' + aspectRatio);
+			debug('set aspect ratio: ' + aspectRatio);
 
-			if (!rx || rx.length !== 3) {
-				aspectRatio = '16:9';
-				rx = aspectRatio.match(/(\d+):(\d+)/);
-			}
+			try {
 
-			w = parseInt(rx[1]);
-			h = parseInt(rx[2]);
-			
-			if (!isNaN(w) && w > 0 && !isNaN(h) && h > 0) {
-				$aspectRatio = w / h;
-				debug('aspect ratio set: ' + $aspectRatio);
-			}
-			else {
-				aspectRatio = '16:9';
+				if (typeof(aspectRatio) === 'number' && aspectRatio > 0) {
+					$aspectRatio = aspectRatio;
+					$opts.aspectRatio = $aspectRatio;
+					return;
+				}
+				
+				if (typeof(aspectRatio) === 'string' && aspectRatio.length >= 3) {
+					var rx = aspectRatio.match(/(\d+):(\d+)/),
+						w,
+						h;
+					
+					if (!rx || rx.length !== 3) {
+						throw('invalid aspect ratio');
+					}
+
+					w = parseInt(rx[1]);
+					h = parseInt(rx[2]);
+					
+					if (isNaN(w) || w <= 0 || isNaN(h) || h <= 0) {
+						throw('invalid aspect ratio');
+					}
+
+					$aspectRatio = w / h;
+					$opts.aspectRatio = aspectRatio;
+				}
+
+			} catch(err) {
+				debug('set aspect ratio: ' + err + ', setting to 16:9');
 				$aspectRatio = 16 / 9;
+				$opts.aspectRatio = $aspectRatio;
 			}
-
-			$opts.aspectRatio = aspectRatio;
 
 		} // doSetAspectRatio()
 
@@ -186,7 +197,7 @@ Author: John Pansewicz, john@redtopia.com
 				r = gridSize * size;
 				debug('calcRadius - size: ' + size + ', gridSize: ' + gridSize + ', radius: ' + r);
 			}
-			
+
 			return(r);
 		
 		} // calcRadius()
@@ -733,12 +744,14 @@ Author: John Pansewicz, john@redtopia.com
 			// resize the wrapper to maintain specified aspect ratio
 			
 			if (typeof($opts.resize) === 'function') {
-				var ar = $opts.resize($elem);
-				if (typeof(ar) === 'string' && ar != $opts.aspectRatio) {
+				try {
+					var ar = $opts.resize($elem);
 					doSetAspectRatio(ar);
-				}
+				} catch(err) {
+					debug('resize callback generated exception: ' + err);
+				}	
 			}
-
+			
 			var w = $($elem).width(),
 				h = Math.ceil(w/$aspectRatio);
 
