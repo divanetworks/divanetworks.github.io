@@ -33,7 +33,7 @@ Default Options:
 
 {
 	debug: false,					// true to send debug messages to console
-	aspectRatio: '16:9',			// aspect ratio of svg
+	aspectRatio: '16:9',			// aspect ratio of svg - either a positive number or string
 	prefix: 'divag-',				// namespace prefix for creating element IDs
 	gridSize: 10,					// size of grid (for display purposes)
 	gridColor: '#eee',				// color of the grid
@@ -56,6 +56,9 @@ Default Options:
 		fontWeight: 'normal',			// font weight
 		color: '#333'					// font color
 	},
+	resize: null,					// called prior to resizing the grid on a window resize event
+									//		resize(elem) returns string or number for aspect ratio
+									//		elem is the jQuery graph object
 	resizeSpeed: 500,				// ms for resize animation
 	resizeTransition: 'elastic'		// resize animation , use any d3 transition ('cubic-in-out', 'linear', 'elastic')
 }
@@ -76,7 +79,7 @@ Methods
 
 		toggleGrid() - Toggles the grid on or off
 
-		setAspectRatio(aspectRatio) - Sets the aspect ratio for the graph
+		setAspectRatio(aspectRatio) - Sets the aspect ratio for the graph - aspect Ratio is either a string in the format '16:9' or a number that represents an aspect ratio (w / h).
 
 		option(optName, optValue) - Sets an option after initialization
 
@@ -120,6 +123,7 @@ Object Data
 		x: number (x grid location),
 		y: number (y grid location),
 		id: string (optional),
+		position: string (optional) can be 'center' (default), 'topleft', 'topright', 'bottomright', 'bottomleft'
 		label: object (optional) {
 			text: string (the text to display),
 			fontSize: number (in pixels),

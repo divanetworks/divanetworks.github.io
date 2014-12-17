@@ -499,18 +499,20 @@ $(document).ready(function () {
 			size: 3
 		},
 		resize: function (elem) {
+			
 			/*
 			Returns an aspect ratio depending on the width of the window
-			elem is the jquery element of the graph
-
-			Since the graph is always 100% width of window, we can use
-			elem to determine window width.
+			
+			elem: the jquery element of the graph
 			*/
+
 			var ar = 16 / 9;
+			
 			winAR = $(window).width() / $(window).height();
 			if (winAR >= ar) {
 				return(ar);
 			}
+
 			return(4/3);
 		}
 	});
