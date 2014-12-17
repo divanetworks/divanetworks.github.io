@@ -179,6 +179,7 @@ $(document).ready(function () {
 		var lines = [
 
 				// circle-3 to circle-1
+				// setting interpolation to 'basis' as an example, but this is set as a default
 				{
 					type: 'curvedLine',
 					data: {
@@ -190,28 +191,28 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-3', end: 'circle-1',
-						curve: {distance:10, offset:20, interpolate: 'basis'}
+						curve: {distance:10, offset:20}
 					}
 				},
 				{
 					type: 'curvedLine',
 					data: {
 						start: 'circle-3', end: 'circle-1',
-						curve: {distance:10, offset:15, interpolate: 'basis'}
+						curve: {distance:10, offset:15}
 					}
 				},
 				{
 					type: 'curvedLine',
 					data: {
 						start: 'circle-3', end: 'circle-1',
-						curve: {distance:10, offset:10, interpolate: 'basis'}
+						curve: {distance:10, offset:10}
 					}
 				},
 				{
 					type: 'curvedLine',
 					data: {
 						start: 'circle-3', end: 'circle-1',
-						curve: {distance:10, offset:5, interpolate: 'basis'}
+						curve: {distance:10, offset:5}
 					}
 				},
 
@@ -220,7 +221,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-2', end: 'circle-1',
-						curve: {distance:5, offset:15, interpolate: 'basis'}
+						curve: {distance:5, offset:15}
 					}
 				},
 
@@ -229,7 +230,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-2', end: 'circle-3',
-						curve: {distance:30, offset:-10, interpolate: 'basis'}
+						curve: {distance:30, offset:-10}
 					}
 				},
 
@@ -238,7 +239,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-2', end: 'circle-4',
-						curve: {distance:60, offset:-10, interpolate: 'basis'}
+						curve: {distance:60, offset:-10}
 					}
 				},
 
@@ -247,7 +248,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-2', end: 'circle-5',
-						curve: {distance:50, offset:22, interpolate: 'basis'}
+						curve: {distance:50, offset:22}
 					}
 				},
 
@@ -256,7 +257,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-2', end: 'sm-circle-1',
-						curve: {distance:65, offset:-5, interpolate: 'basis'}
+						curve: {distance:65, offset:-5}
 					}
 				},
 
@@ -267,7 +268,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-3', end: 'circle-5',
-						curve: {distance:60, offset:-13, interpolate: 'basis'}
+						curve: {distance:60, offset:-13}
 					}
 				},
 
@@ -276,7 +277,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-3', end: 'sm-circle-7',
-						curve: {distance:50, offset:7, interpolate: 'basis'}
+						curve: {distance:50, offset:7}
 					}
 				},
 
@@ -285,7 +286,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-3', end: 'sm-circle-8',
-						curve: {distance:50, offset:-4, interpolate: 'basis'}
+						curve: {distance:50, offset:-4}
 					}
 				},
 
@@ -294,7 +295,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-3', end: 'sm-circle-9',
-						curve: {distance:65, offset:2, interpolate: 'basis'}
+						curve: {distance:65, offset:2}
 					}
 				},
 
@@ -303,7 +304,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-4', end: 'sm-circle-1',
-						curve: {distance:65, offset:3, interpolate: 'basis'}
+						curve: {distance:65, offset:3}
 					}
 				},
 
@@ -312,7 +313,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-4', end: 'sm-circle-2',
-						curve: {distance:60, offset:-3, interpolate: 'basis'}
+						curve: {distance:60, offset:-3}
 					}
 				},
 
@@ -321,7 +322,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-4', end: 'sm-circle-3',
-						curve: {distance:70, offset:-2, interpolate: 'basis'}
+						curve: {distance:70, offset:-2}
 					}
 				},
 
@@ -330,7 +331,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'sm-circle-3', end: 'circle-5',
-						curve: {distance:25, offset:-3, interpolate: 'basis'}
+						curve: {distance:25, offset:-3}
 					}
 				},
 
@@ -339,7 +340,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-4', end: 'circle-5',
-						curve: {distance:30, offset:-7, interpolate: 'basis'}
+						curve: {distance:30, offset:-7}
 					}
 				},
 
@@ -348,7 +349,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-5', end: 'sm-circle-8',
-						curve: {distance:55, offset:-5, interpolate: 'basis'}
+						curve: {distance:55, offset:-5}
 					}
 				},
 
@@ -357,7 +358,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-5', end: 'sm-circle-4',
-						curve: {distance:60, offset:-4, interpolate: 'basis'}
+						curve: {distance:60, offset:-4}
 					}
 				},
 
@@ -366,7 +367,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-5', end: 'circle-7',
-						curve: {distance:50, offset:-10, interpolate: 'basis'}
+						curve: {distance:50, offset:-10}
 					}
 				},
 
@@ -375,7 +376,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-5', end: 'sm-circle-6',
-						curve: {distance:35, offset:-8, interpolate: 'basis'}
+						curve: {distance:35, offset:-8}
 					}
 				},
 
@@ -384,7 +385,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-5', end: 'circle-6',
-						curve: {distance:60, offset:-3, interpolate: 'basis'}
+						curve: {distance:60, offset:7}
 					}
 				},
 
@@ -393,7 +394,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-5', end: 'sm-circle-5',
-						curve: {distance:65, offset:-12, interpolate: 'basis'}
+						curve: {distance:65, offset:-12}
 					}
 				},
 
@@ -402,7 +403,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-5', end: 'circle-8',
-						curve: {distance:42, offset:-11, interpolate: 'basis'}
+						curve: {distance:42, offset:-11}
 					}
 				},
 
@@ -411,7 +412,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-6', end: 'circle-11',
-						curve: {distance:40, offset:-10, interpolate: 'basis'}
+						curve: {distance:40, offset:-10}
 					}
 				},
 
@@ -420,7 +421,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-7', end: 'sm-circle-4',
-						curve: {distance:60, offset:5, interpolate: 'basis'}
+						curve: {distance:60, offset:5}
 					}
 				},
 
@@ -429,7 +430,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-7', end: 'circle-9',
-						curve: {distance:40, offset:9, interpolate: 'basis'}
+						curve: {distance:40, offset:9}
 					}
 				},
 
@@ -438,7 +439,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'circle-8', end: 'circle-10',
-						curve: {distance:40, offset:-10, interpolate: 'basis'}
+						curve: {distance:40, offset:-10}
 					}
 				},
 
@@ -447,7 +448,7 @@ $(document).ready(function () {
 					type: 'curvedLine',
 					data: {
 						start: 'sm-circle-9', end: 'circle-6',
-						curve: {distance:40, offset:5, interpolate: 'basis'}
+						curve: {distance:40, offset:5}
 					}
 				}
 
@@ -486,11 +487,15 @@ $(document).ready(function () {
 	$(mainGraph).divaGraph({
 		debug:true,
 		resizeSpeed: 1000,
+		aspectRatio: 16/9,
 		prefix: 'diva-',
 		bgColor: '#fff',
 		lines: {					// default line styles
 			stroke: '#ccc',
 			strokeWidth: 1
+		},
+		curves: {
+			interpolation: 'basis'
 		},
 		circles: {				// default circle styles - these setting will draw the white circles with border
 			stroke: '#ccc',
@@ -504,11 +509,16 @@ $(document).ready(function () {
 			Returns an aspect ratio depending on the width of the window
 			
 			elem: the jquery element of the graph
+
+			NOTE: on the iphone, winAR ends up being slightly less than 1.777. The fix
+			is to fix the precision to 2 places.
 			*/
 
-			var ar = 16 / 9;
+			var ar = 16 / 9,
+				winAR = $(window).width() / $(window).height();
 			
-			winAR = $(window).width() / $(window).height();
+			winAR = winAR.toFixed(2);
+
 			if (winAR >= ar) {
 				return(ar);
 			}

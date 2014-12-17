@@ -640,7 +640,7 @@ Author: John Pansewicz, john@redtopia.com
 					stroke: $opts.lines.stroke,
 					strokeWidth: $opts.lines.strokeWidth,
 					fill: $opts.lines.fill,
-					curve: {distance: 50, offset: 10, interpolate: 'cardinal'},
+					curve: {distance: 50, offset: 10, interpolate: $opts.curves.interpolation},
 					resize: function (object, data) {
 						// recalculate the line
 						var start = getObjectCoords(data.start),
@@ -744,14 +744,17 @@ Author: John Pansewicz, john@redtopia.com
 			// resize the wrapper to maintain specified aspect ratio
 			
 			if (typeof($opts.resize) === 'function') {
+
 				try {
 					var ar = $opts.resize($elem);
+					//alert('doResize: ' + ar);
 					doSetAspectRatio(ar);
 				} catch(err) {
 					debug('resize callback generated exception: ' + err);
+					//alert(err);
 				}	
 			}
-			
+
 			var w = $($elem).width(),
 				h = Math.ceil(w/$aspectRatio);
 
@@ -928,6 +931,9 @@ Author: John Pansewicz, john@redtopia.com
 			stroke: '#ccc',					// color
 			strokeWidth: 1,					// line width
 			fill: 'none'					// fill color
+		},
+		curves: {						// default curve definition for curved lines
+			interpolation: 'basis'			// interpolation method
 		},
 		circles: {						// default values for circle drawing
 			stroke: '#ccc',					// border color
